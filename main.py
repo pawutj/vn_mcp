@@ -133,7 +133,7 @@ def main():
         else:
             # Print first item from each category as sample
             if result['vndesc']:
-                print(f"Sample vndesc: {result['vndesc'][0]}...")
+                print(f"Sample vndesc: {result['vndesc'][0][:100]}...")
             if result['vntags'] and result['vntags'][0]:
                 print(f"Sample vntags list: {result['vntags'][0]}")
     
