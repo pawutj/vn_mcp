@@ -5,6 +5,7 @@ import {
   ErrorCode,
   ListToolsRequestSchema,
   McpError,
+  ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
 const server = new Server({
@@ -37,6 +38,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       }
     },
     {
+      name :"get_random_password",
+      description: "Get Random Password",
+      inputSchema: {
+        type: "object",
+        properties: {
+        },
+        required: []
+      }
+    },
+    {
       name: "get_encode_extra_password",
       description: "Get Encode Extra Password",
       inputSchema: {
@@ -52,6 +63,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  if (request.params.name === "get_random_password") {
+    const args = request.params.arguments as {};
+    return { toolResult: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) };
+  }
+
   if (request.params.name === "calculate_sum") {
     const args = request.params.arguments as { a: number, b: number };
     const { a, b } = args;
