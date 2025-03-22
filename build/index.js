@@ -9,15 +9,6 @@ const server = new Server({
         tools: {}
     }
 });
-server.setRequestHandler(ListToolsRequestSchema, async () => {
-    return { tools: [] };
-});
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    if (request.params.name === "name_of_tool") {
-        return {};
-    }
-    throw new McpError(ErrorCode.InternalError, "Tool not found");
-});
 const transport = new StdioServerTransport();
 await server.connect(transport);
 server.setRequestHandler(ListToolsRequestSchema, async () => {
@@ -33,7 +24,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     },
                     required: ["a", "b"]
                 }
-            }]
+            },
+            {
+                name: "get_encode_extra_password",
+                description: "Get Encode Extra Password",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        a: { type: "string" },
+                    },
+                    required: ["a"]
+                }
+            }
+        ]
     };
 });
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
@@ -41,6 +44,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const args = request.params.arguments;
         const { a, b } = args;
         return { toolResult: a + b };
+    }
+    if (request.params.name === "get_encode_extra_password") {
+        const args = request.params.arguments;
+        const { a } = args;
+        return { toolResult: a + "123" };
     }
     throw new McpError(ErrorCode.InternalError, "Tool not found");
 });
