@@ -33,7 +33,8 @@ class WebScraper:
         results = []
         
         for url in urls:
-            print("###" +"url" + i + "###")
+            i=i+1
+            print("###" +"url" + str(i) + "###")
             try:
                 # Add random delay to avoid getting blocked
                 if len(results) > 0:  # No delay for the first request
@@ -47,7 +48,7 @@ class WebScraper:
                 
             except Exception as e:
                 print(f"Error processing URL {url}: {str(e)}")
-        
+            
         return results
     
     def scrape_single_url(self, url: str) -> Dict[str, Any]:
